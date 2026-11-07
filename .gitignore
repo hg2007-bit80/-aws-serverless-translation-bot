@@ -1,0 +1,32 @@
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+.terraform.tfstate.lock.info
+*.tfvars
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# AWS credentials
+.aws/
+credentials
+config
+
+# Python
+__pycache__/
+*.pyc
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# Generated files and debug logs
+provider-schema.json
+terraform-debug.log
+*.log
