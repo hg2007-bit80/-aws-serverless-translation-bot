@@ -1,5 +1,13 @@
 
 terraform {
+  backend "s3" {
+    bucket       = "translationbot-terraform-state-597619903134-ap-southeast-1"
+    key          = "translationbot/terraform.tfstate"
+    region       = "ap-southeast-1"
+    encrypt      = true
+    use_lockfile = true
+  }
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"

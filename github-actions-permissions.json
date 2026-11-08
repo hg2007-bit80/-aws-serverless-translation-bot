@@ -1,0 +1,121 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "TerraformRemoteState",
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListBucket",
+        "s3:GetBucketLocation"
+      ],
+      "Resource": "arn:aws:s3:::translationbot-terraform-state-597619903134-ap-southeast-1"
+    },
+    {
+      "Sid": "TerraformStateObjects",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::translationbot-terraform-state-597619903134-ap-southeast-1/translationbot/terraform.tfstate",
+        "arn:aws:s3:::translationbot-terraform-state-597619903134-ap-southeast-1/translationbot/terraform.tfstate.tflock"
+      ]
+    },
+    {
+      "Sid": "TerraformIAM",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetRole",
+        "iam:CreateRole",
+        "iam:UpdateRole",
+        "iam:UpdateAssumeRolePolicy",
+        "iam:TagRole",
+        "iam:UntagRole",
+        "iam:ListRoleTags",
+        "iam:PutRolePolicy",
+        "iam:GetRolePolicy",
+        "iam:DeleteRolePolicy",
+        "iam:ListRolePolicies"
+      ],
+      "Resource": "arn:aws:iam::597619903134:role/LambdaTranslationRole"
+    },
+    {
+      "Sid": "PassLambdaExecutionRole",
+      "Effect": "Allow",
+      "Action": "iam:PassRole",
+      "Resource": "arn:aws:iam::597619903134:role/LambdaTranslationRole",
+      "Condition": {
+        "StringEquals": {
+          "iam:PassedToService": "lambda.amazonaws.com"
+        }
+      }
+    },
+    {
+      "Sid": "TerraformLambda",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:CreateFunction",
+        "lambda:GetFunction",
+        "lambda:GetFunctionConfiguration",
+        "lambda:UpdateFunctionCode",
+        "lambda:UpdateFunctionConfiguration",
+        "lambda:DeleteFunction",
+        "lambda:TagResource",
+        "lambda:UntagResource",
+        "lambda:ListTags"
+      ],
+      "Resource": "arn:aws:lambda:ap-southeast-1:597619903134:function:TranslationLambda"
+    },
+    {
+      "Sid": "TerraformLex",
+      "Effect": "Allow",
+      "Action": [
+        "lex:CreateBot",
+        "lex:DescribeBot",
+        "lex:UpdateBot",
+        "lex:DeleteBot",
+        "lex:ListTagsForResource",
+        "lex:TagResource",
+        "lex:UntagResource"
+      ],
+      "Resource": "arn:aws:lex:ap-southeast-1:597619903134:bot/*"
+    },
+    {
+      "Sid": "TerraformDynamoDB",
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:CreateTable",
+        "dynamodb:DescribeTable",
+        "dynamodb:UpdateTable",
+        "dynamodb:DeleteTable",
+        "dynamodb:TagResource",
+        "dynamodb:UntagResource",
+        "dynamodb:ListTagsOfResource"
+      ],
+      "Resource": "arn:aws:dynamodb:ap-southeast-1:597619903134:table/TranslationLogs"
+    },
+    {
+      "Sid": "TerraformCloudWatch",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:GetDashboard",
+        "cloudwatch:PutDashboard",
+        "cloudwatch:DeleteDashboards",
+        "cloudwatch:PutMetricAlarm",
+        "cloudwatch:DescribeAlarms",
+        "cloudwatch:DeleteAlarms"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VerifyAWSIdentity",
+      "Effect": "Allow",
+      "Action": [
+        "sts:GetCallerIdentity"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
