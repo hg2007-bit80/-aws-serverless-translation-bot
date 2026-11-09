@@ -29,6 +29,14 @@ jobs:
           echo "AWS role ARN: ${{ vars.AWS_ROLE_ARN }}"
           echo "AWS region: ${{ vars.AWS_REGION }}"
 
+      - name: Inspect OIDC token claims
+        run: |
+          curl -sS \
+            -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com" \
+            | jq -r '.value' \
+            | jq -R 'split(".")[1] | gsub("-";"+") | gsub("_";"/") | @base64d | fromjson | {iss, aud, sub, repository, ref}'
+
       - name: Configure AWS credentials using OIDC
         uses: aws-actions/configure-aws-credentials@v4
         with:
